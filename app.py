@@ -10,8 +10,8 @@ weixin = Weixin()
 weixin.init_app(app)
 app.add_url_rule('/', view_func=weixin.view_func)
 
-CAIYUN_API = app.config.CAIYUN_API
-CAIYUN_TOKEN = app.config.CAIYUN_TOKEN
+CAIYUN_API = app.config['CAIYUN_API']
+CAIYUN_TOKEN = app.config['CAIYUN_TOKEN']
 
 
 @weixin.register('*')
