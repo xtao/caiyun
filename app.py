@@ -38,6 +38,7 @@ def reply(**kwargs):
         return weixin.reply(username,
                             sender=sender,
                             content=content)
+    content = "请发送微信位置过来，感谢。"
     return weixin.reply(username,
                         sender=sender,
                         content=content)
