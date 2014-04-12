@@ -2,7 +2,7 @@
 
 
 def caiyun_reply(data):
-    message = u'抱歉，发生位置错误。'
+    message = u'抱歉，发生未知错误。'
     status = data.get('status')
     if status == 'ok':
         message = data.get('summary', '')
