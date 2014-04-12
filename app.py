@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import requests
 from flask import Flask
 from flask_weixin import Weixin
@@ -38,7 +40,7 @@ def reply(**kwargs):
         return weixin.reply(username,
                             sender=sender,
                             content=content)
-    content = "请发送微信位置过来，感谢。"
+    content = u"请发送微信位置过来,感谢."
     return weixin.reply(username,
                         sender=sender,
                         content=content)
