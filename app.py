@@ -4,6 +4,7 @@ import requests
 from flask import Flask
 from flask_weixin import Weixin
 from caiyun import settings
+from caiyun.utils import caiyun_reply
 
 app = Flask(__name__)
 app.config.from_object(settings)
@@ -32,15 +33,11 @@ def reply(**kwargs):
                                 token=CAIYUN_TOKEN)
         r = requests.get(url)
         data = r.json()
-        s = data.get('status')
-        if s == 'ok':
-            content = data.get('summary', '')
-        else:
-            content = r.text
+        content = caiyun_reply(data)
         return weixin.reply(username,
                             sender=sender,
                             content=content)
-    content = u"请发送微信位置过来,感谢."
+    content = u"请发送微信位置过来，感谢。"
     return weixin.reply(username,
                         sender=sender,
                         content=content)

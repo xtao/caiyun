@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 WEIXIN_TOKEN = ""
 WEIXIN_SENDER = ""
 WEIXIN_EXPIRES_IN = ""
