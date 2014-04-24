@@ -11,6 +11,11 @@ CAIYUN_API = "%s?%s" % ("http://rain.swarma.net/fcgi-bin/v1/api.py",
                         "&product={product}"
                         "&token={token}")
 
+RQ_DEFAULT_HOST = 'localhost'
+RQ_DEFAULT_PORT = 6479
+RQ_DEFAULT_PASSWORD = ""
+RQ_DEFAULT_DB = 1
+
 try:
     from local_settings import *
 except ImportError:

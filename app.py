@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import requests
 from flask import Flask
 from flask_weixin import Weixin
+from flask.ext.rq import RQ
 from caiyun import settings
-from caiyun.utils import caiyun_reply
+from caiyun.queue import reply_location
 
 app = Flask(__name__)
 app.config.from_object(settings)
@@ -12,6 +12,8 @@ app.config.from_object(settings)
 weixin = Weixin()
 weixin.init_app(app)
 app.add_url_rule('/', view_func=weixin.view_func)
+
+RQ(app)
 
 CAIYUN_API = app.config['CAIYUN_API']
 CAIYUN_TOKEN = app.config['CAIYUN_TOKEN']
@@ -31,14 +33,8 @@ def reply(**kwargs):
     if type == 'location':
         x = kwargs.get('location_x')
         y = kwargs.get('location_y')
-        url = CAIYUN_API.format(latitude=x,
-                                longitude=y,
-                                format='json',
-                                product='minutes_prec',
-                                token=CAIYUN_TOKEN)
-        r = requests.get(url)
-        data = r.json()
-        content = caiyun_reply(data)
+        reply_location.delay(username, sender, x, y)
+        content = u'您的地址已收到，彩云天气正在分析您当地的天气情况。'
         return weixin.reply(username,
                             sender=sender,
                             content=content)

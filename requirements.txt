@@ -1,3 +1,6 @@
 Flask==0.10.1
-Flask-Weixin==0.2.0
 requests==2.2.1
+Flask-RQ==0.2
+redis==2.9.1
+rq==0.4.1
+-e git+https://github.com/lepture/flask-weixin.git@76b9650ec263bbdb7e865eae110b64f02264b3d8#egg=flask_weixin
