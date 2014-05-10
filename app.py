@@ -2,9 +2,9 @@
 
 from flask import Flask
 from flask_weixin import Weixin
-from flask.ext.rq import RQ
+from flask.ext.rq import RQ, get_worker
 from caiyun import settings
-from caiyun.queue import reply_location
+from caiyun.queue import reply_location, reply_location_sync
 
 app = Flask(__name__)
 app.config.from_object(settings)
@@ -33,8 +33,9 @@ def reply(**kwargs):
     if type == 'location':
         x = kwargs.get('location_x')
         y = kwargs.get('location_y')
-        reply_location.delay(username, sender, x, y)
-        content = u'您的地址已收到，彩云天气正在分析您当地的天气情况。'
+        #reply_location.delay(username, sender, x, y)
+        #content = u'您的地址已收到，彩云天气正在分析您当地的天气情况。'
+        content = reply_location_sync(username, sender, x, y)
         return weixin.reply(username,
                             sender=sender,
                             content=content)
