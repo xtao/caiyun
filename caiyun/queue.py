@@ -11,7 +11,11 @@ from settings import (WEIXIN_TOKEN,
                       CAIYUN_TOKEN,
                       CAIYUN_COORD_API,
                       CAIYUN_COORD_TEXT_API)
-MSG = u"{address}: {summary} (访问 http://caiyunapp.com/#{longitude},{latitude} 查看详情)"
+MSG = u"{address}: {summary}"
+
+MSG1 = u"{summary} (访问 http://caiyunapp.com/#{longitude},{latitude} 查看详情)"
+
+
 
 
 @job
@@ -36,7 +40,9 @@ def reply_location_sync(receiver, sender, x, y):
     r = requests.get(url)
     data = r.json()
     content = caiyun_reply(data)
-    return content
+    return MSG1.format(summary=content,
+                       longitude=y,
+					   latitude=x)
 
 
 def reply_text_sync(receiver, sender, text, default):
@@ -52,11 +58,9 @@ def reply_text_sync(receiver, sender, text, default):
     data = r.json()
     address = caiyun_coord_text_reply(data)
     if not address:
-        return default
+		address = text
     summary = reply_location_sync(receiver, sender, lat, lon)
     if not summary:
         return default
     return MSG.format(address=address,
-                      summary=summary,
-                      longitude=lon,
-                      latitude=lat)
+                      summary=summary)
