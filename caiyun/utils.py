@@ -27,3 +27,9 @@ def caiyun_coord_reply(data):
         lat = coord.get('lat')
         lon = coord.get('lng')
     return lat, lon
+
+
+def caiyun_coord_text_reply(data):
+    status = data.get('status')
+    if status == 'ok':
+        return data.get('address')

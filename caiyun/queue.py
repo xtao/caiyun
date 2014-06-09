@@ -2,12 +2,16 @@
 
 import requests
 from flask.ext.rq import job
-from .utils import caiyun_reply, caiyun_coord_reply
+from .utils import (caiyun_reply,
+                    caiyun_coord_reply,
+                    caiyun_coord_text_reply)
 from .sender import send_text
 from settings import (WEIXIN_TOKEN,
                       CAIYUN_API,
                       CAIYUN_TOKEN,
-                      CAIYUN_COORD_API)
+                      CAIYUN_COORD_API,
+                      CAIYUN_COORD_TEXT_API)
+MSG = u"{address}: {summary} (访问 http://caiyunapp.com/#{longitude},{latitude} 查看详情)"
 
 
 @job
@@ -42,4 +46,17 @@ def reply_text_sync(receiver, sender, text, default):
     lat, lon = caiyun_coord_reply(data)
     if not all([lat, lon]):
         return default
-    return reply_location_sync(receiver, sender, lat, lon)
+    url = CAIYUN_COORD_TEXT_API.format(longitude=lon,
+                                       latitude=lat)
+    r = requests.get(url)
+    data = r.json()
+    address = caiyun_coord_text_reply(data)
+    if not address:
+        return default
+    summary = reply_location_sync(receiver, sender, lat, lon)
+    if not summary:
+        return default
+    return MSG.format(address=address,
+                      summary=summary,
+                      longitude=lon,
+                      latitude=lat)
