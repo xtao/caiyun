@@ -10,7 +10,7 @@ CAIYUN_API = "%s?%s" % ("http://rain.swarma.net/fcgi-bin/v1/api.py",
                         "&format={format}"
                         "&product={product}"
                         "&token={token}")
-CAIYUN_COORD_API = "%s?%s" % ("http://caiyunapp.com/fcgi-bin/v1/text2coord.py",
+CAIYUN_COORD_API = u"%s?%s" % ("http://caiyunapp.com/fcgi-bin/v1/text2coord.py",
                               "address={address}")
 
 RQ_DEFAULT_HOST = 'localhost'
