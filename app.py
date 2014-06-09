@@ -4,7 +4,9 @@ from flask import Flask
 from flask_weixin import Weixin
 from flask.ext.rq import RQ, get_worker
 from caiyun import settings
-from caiyun.queue import reply_location, reply_location_sync
+from caiyun.queue import (reply_location,
+                          reply_location_sync,
+                          reply_text_sync)
 
 app = Flask(__name__)
 app.config.from_object(settings)
@@ -28,24 +30,29 @@ def reply(**kwargs):
     username = kwargs.get('sender')
     sender = kwargs.get('receiver')
     content = kwargs.get('content')
-    content = DEFAULT_MSG
+    reply_content = DEFAULT_MSG
     type = kwargs.get('type')
     if type == 'location':
         x = kwargs.get('location_x')
         y = kwargs.get('location_y')
         #reply_location.delay(username, sender, x, y)
         #content = u'您的地址已收到，彩云天气正在分析您当地的天气情况。'
-        content = reply_location_sync(username, sender, x, y)
+        reply_content = reply_location_sync(username, sender, x, y)
         return weixin.reply(username,
                             sender=sender,
-                            content=content)
+                            content=reply_content)
     elif type == 'event':
         event = kwargs.get('event')
         if event == 'subscribe':
-            content = SUBSCRIBE_MSG
+            reply_content = SUBSCRIBE_MSG
+    elif type == 'text':
+        reply_content = reply_text_sync(username,
+                                        sender,
+                                        content,
+                                        reply_content)
     return weixin.reply(username,
                         sender=sender,
-                        content=content)
+                        content=reply_content)
 
 
 if __name__ == "__main__":

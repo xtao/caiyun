@@ -10,6 +10,8 @@ CAIYUN_API = "%s?%s" % ("http://rain.swarma.net/fcgi-bin/v1/api.py",
                         "&format={format}"
                         "&product={product}"
                         "&token={token}")
+CAIYUN_COORD_API = "%s?%s" % ("http://caiyunapp.com/fcgi-bin/v1/text2coord.py",
+                              "address={address}")
 
 RQ_DEFAULT_HOST = 'localhost'
 RQ_DEFAULT_PORT = 6479

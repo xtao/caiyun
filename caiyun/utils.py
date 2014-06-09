@@ -17,3 +17,13 @@ def caiyun_reply(data):
         elif error_type == 'no_latlon':
             message = u'抱歉，你所查询的位置，缺少经纬度参数。'
     return message
+
+
+def caiyun_coord_reply(data):
+    lat, lon = None, None
+    status = data.get('status')
+    if status == 'ok':
+        coord = data.get('coord')
+        lat = coord.get('lat')
+        lon = coord.get('lng')
+    return lat, lon
