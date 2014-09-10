@@ -38,13 +38,16 @@ def reply(**kwargs):
         #reply_location.delay(username, sender, x, y)
         #content = u'您的地址已收到，彩云天气正在分析您当地的天气情况。'
         reply_content = reply_location_sync(username, sender, x, y)
-        return weixin.reply(username,
-                            sender=sender,
-                            content=reply_content)
+
     elif type == 'event':
         event = kwargs.get('event')
         if event == 'subscribe':
             reply_content = SUBSCRIBE_MSG
+        elif event == 'LOCATION':
+          x = kwargs.get('latitude')
+          y = kwargs.get('longitude')
+          reply_content = reply_location_sync(username, sender, x, y)
+
     elif type == 'text':
         reply_content = reply_text_sync(username,
                                         sender,
